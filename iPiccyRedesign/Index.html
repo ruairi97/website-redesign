@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>iPiccy</title>
+    <link rel="stylesheet" href="styleC.css">
+  </head>
+    <body>
+      <div class="menu">
+        <div class="toggle"><ion-icon name="add-outline"></ion-icon></div>
+        <li style="--i:0;">
+          <a href="#"><ion-icon name="crop-outline"></ion-icon></a>
+        </li>
+        <li style="--i:1;">
+          <a href="#"><ion-icon name="brush-outline"></ion-icon></a>
+        </li>
+        <li style="--i:2;">
+          <a href="#"><ion-icon name="color-wand-outline"></ion-icon></a>
+        </li>
+        <li style="--i:3;">
+          <a href="#"><ion-icon name="color-palette-outline"></ion-icon></a>
+        </li>
+        <li style="--i:4;">
+          <a href="#"><ion-icon name="invert-mode-outline"></ion-icon></a>
+        </li>
+        <li style="--i:5;">
+          <a href="#"><ion-icon name="resize-outline"></ion-icon></a>
+        </li>
+        <li style="--i:6;">
+          <a href="#"><ion-icon name="layers-outline"></ion-icon></a>
+        </li>
+        <li style="--i:7;">
+          <a href="#"><ion-icon name="save-outline"></ion-icon></a>
+        </li>
+      </div>
+
+      <div id="dropArea"
+        style='background-color: #ffffff; background-image: url("draganddrop2.png"); width:608px; height:342px; border: 2px dotted blue;
+              position:fixed; float: left; float: right; top:8%;'>
+      </div>
+
+      <p id="fileName"></p>
+
+      <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+      <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+
+      <script>
+        let toggle = document.querySelector('.toggle');
+        let menu = document.querySelector('.menu');
+        toggle.onclick = function(){
+          menu.classList.toggle('active')
+        }
+
+        const dropArea = document.querySelector("dropArea");
+        var editImage;
+
+
+        dropArea.addEventListener('dragover', (event) => {
+          event.stopPropagation();
+          event.preventDefault();
+
+
+          event.dataTransfer.dropEffect = 'copy';
+        });
+
+
+        dropArea.addEventListener('drop', (event) => {
+          event.stopPropagation();
+          event.preventDefault();
+
+          fileList = event.dataTransfer.files;
+
+          document.querySelector("fileName").textContent = fileList[0].name;
+
+          readImage(fileList[0]);
+        });
+
+
+        readImage = (file) => {
+          const reader = new FileReader();
+          reader.addEventListener('load', (event) => {
+            editImage = event.target.result;
+            document.querySelector("dropArea").style.backgroundImage = `url(${editImage})`;
+          });
+          reader.readAsDataURL(file);
+        }
+      </script>
+    </body>
+</html>
